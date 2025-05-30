@@ -4,7 +4,7 @@ from sqlalchemy import select
 from app import app
 from models import Users, Friends, Messages
 from flask_login import current_user
-from settings import Session_db
+from settings import Session_db, cache
 
 
 @app.route("/search_friends", methods = ["GET","POST"])
@@ -59,10 +59,16 @@ def friend_requests_confirm():
             session.commit()
         else:
             return redirect(url_for('home'))
+    
+    cache.clear()
     return redirect(url_for("friend_requests"))
 
 
+def make_key_cache():
+    return f"user:{current_user.id}|{request.full_path}"
+
 @app.route("/my_friends")
+@cache.cached(timeout=60*5, key_prefix=make_key_cache)
 @login_required
 def my_friends():
     with Session_db() as session:

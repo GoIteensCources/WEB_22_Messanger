@@ -2,6 +2,9 @@
 
 
 {% block content %}
+    <h1>Mesanger</h1>
+
+
     {% if current_user.is_authenticated %}
     <p>Ви увійшли як {{ current_user.username }} | <a href="{{ url_for('logout') }}">Вийти</a></p>
 

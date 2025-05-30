@@ -12,6 +12,9 @@ if __name__ == "__main__":
         
         u1 = Users(username = 'admin', email="a@ex.com")    
         u1.password = generate_password_hash("admin")
-        s.add(u1)
+        
+        u2 = Users(username = 'user', email="a2@ex.com")    
+        u2.password = generate_password_hash("user")
+        s.add_all([u1, u2])
         s.commit()
         

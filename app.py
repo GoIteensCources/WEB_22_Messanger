@@ -1,18 +1,20 @@
-import os
-
-from flask import Flask, redirect, render_template, session, url_for
+from flask import Flask
 from flask_login import LoginManager
 
 from models import Users
+from settings import Config, cache
 
 app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY", "is_a_very_secret_key")
+app.config.from_object(Config)
+
+cache.init_app(app)
 
 
 login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.login_message = "NEED LOGIN"
 login_manager.init_app(app)
+
 
 @login_manager.user_loader
 def load_user(user_id):
